@@ -48,7 +48,7 @@ def write_menu_to_csv(answer):
     if isinstance(answer, dict) and 'menu' in answer:
         rows = []
         for item in answer['menu']:
-            rows.append({'shop': answer['shop_name'], 'dish': item['dish'], 'price': item['price']})
+            rows.append({'shop': answer['shop_name'], 'dish': item['dish'], 'price': item['price'], 'floor': item['floor']})
 
         df_new = pd.DataFrame(rows)
 
