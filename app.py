@@ -1,12 +1,12 @@
 import gradio as gr
 from image_preprocess import resize_and_encoding
 from parsing_menu import get_menu_text, write_menu_to_csv
-# from pandas import DataFrame as df
+
 
 def main_app(img):
     img_base64 = resize_and_encoding(img)
     menu_dict, menu_JSON = get_menu_text(img_base64)
-    write_menu_to_csv(menu_dict)
+    # write_menu_to_csv(menu_dict)
     shop_name = menu_dict['shop_name']
     menu = menu_dict['menu']
     # 转换菜单格式，以便在 Dataframe 中显示
@@ -16,9 +16,9 @@ def main_app(img):
 def submit_changes(shop_name, menu_list, floor):
     # 将用户编辑后的菜单重新转换为字典格式
 
-    updated_menu = {'shop_name': shop_name}
-    updated_menu.update({'menu': menu_list.to_dict('records')})
-    # write_menu_to_csv(updated_menu)
+    updated_menu = {'shop_name': shop_name, 'floor': floor, 'menu': [ {'dish': item[0], 'price': item[1]} for item in menu_list.itertuples(index=False)]}
+
+    write_menu_to_csv(updated_menu)
     # 处理提交的数据（例如保存到文件或数据库中）
     print("Updated Shop Name:", shop_name)
     print("Updated Menu:", updated_menu)
@@ -27,7 +27,7 @@ def submit_changes(shop_name, menu_list, floor):
 with gr.Blocks() as demo:
     # 上传图片并获取初始数据
     img_input = gr.Image(label="Upload Menu Image")
-    floor_input = gr.Radio([1, 2, 3], label="Floor")
+    floor_input = gr.Radio(['1', '2', '3'], label="Floor")
     shop_name_output = gr.Textbox(label="Shop Name")
     menu_output = gr.Dataframe(headers=["Dish", "Price"], label="Menu", datatype=["str", "number"])
 

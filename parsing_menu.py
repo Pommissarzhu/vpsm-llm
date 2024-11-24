@@ -1,6 +1,8 @@
 from openai import OpenAI
 import json
 import pandas as pd
+from image_preprocess import resize_and_encoding
+import cv2 as cv
 
 def get_menu_text(img_base64):
     with open("api_key_config", "r", encoding="utf-8") as file:
@@ -48,7 +50,7 @@ def write_menu_to_csv(answer):
     if isinstance(answer, dict) and 'menu' in answer:
         rows = []
         for item in answer['menu']:
-            rows.append({'shop': answer['shop_name'], 'dish': item['dish'], 'price': item['price'], 'floor': item['floor']})
+            rows.append({'shop': answer['shop_name'],'floor': answer['floor'], 'dish': item['dish'], 'price': item['price']})
 
         df_new = pd.DataFrame(rows)
 
@@ -65,3 +67,10 @@ def write_menu_to_csv(answer):
         print("数据已成功追加到 output.csv")
     else:
         print("answer 不是有效的字典或者不包含 'menu' 键")
+
+if __name__ == '__main__':
+    img = cv.imread('jz.jpg')
+    base64_img = resize_and_encoding(img)
+    answer, target = get_menu_text(base64_img)
+    answer['floor'] = '1'
+    write_menu_to_csv(answer)
