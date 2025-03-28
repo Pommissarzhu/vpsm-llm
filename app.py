@@ -1,4 +1,5 @@
 import gradio as gr
+import pandas as pd
 from image_preprocess import resize_and_encoding
 from parsing_menu import get_menu_text, write_menu_to_csv
 
