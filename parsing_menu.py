@@ -54,15 +54,15 @@ def write_menu_to_csv(answer):
 
         df_new = pd.DataFrame(rows)
 
-        # 将新数据追加到 CSV 文件中，指定编码为 utf-8-sig
+        # 将新数据追加到 CSV 文件中，指定编码为 utf-8-sig，否则可能导致 Excel 打开 CSV 文件出现乱码
         csv_file = 'output.csv'
         try:
             # 如果文件存在则追加数据，否则创建文件
-            df_existing = pd.read_csv(csv_file, encoding='utf-8')
+            df_existing = pd.read_csv(csv_file, encoding='utf-8-sig')
             df_combined = pd.concat([df_existing, df_new], ignore_index=True)
-            df_combined.to_csv(csv_file, index=False, encoding='utf-8')
+            df_combined.to_csv(csv_file, index=False, encoding='utf-8-sig')
         except FileNotFoundError:
-            df_new.to_csv(csv_file, index=False, encoding='utf-8')
+            df_new.to_csv(csv_file, index=False, encoding='utf-8-sig')
 
         print("数据已成功追加到 output.csv")
     else:
