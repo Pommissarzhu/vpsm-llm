@@ -2,6 +2,11 @@ import cv2
 import base64
 
 def resize_and_encoding(img):
+    # 防止处理过小的图片
+    MIN_PIXELS = 100*100
+    if img.size < MIN_PIXELS:
+        raise ValueError("图片分辨率过低")
+
     # 获取原始图片的宽和高
     height, width = img.shape[:2]
 
